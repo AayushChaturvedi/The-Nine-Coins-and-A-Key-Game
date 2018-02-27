@@ -109,7 +109,7 @@ function Spider(game, x, y){
     this.body.velocity.x = Spider.SPEED;
 }
 
-Spider.SPEED = 25; //see around line 298
+Spider.SPEED = 30; //see around line 298
 
 Spider.prototype = Object.create(Phaser.Sprite.prototype);
 Spider.prototype.constructor = Spider;
@@ -217,6 +217,7 @@ PlayState.update = function(){
     this._handleInput();
     //update scoreboards
     this.coinFont.text = `x${this.coinPickupCount}`;
+    this.levelInfo.text = `x${this.level + 1}`;
     this.keyIcon.frame = this.hasKey ? 1 : 0;
 };
 
@@ -261,9 +262,14 @@ PlayState._handleInput = function(){
 };
 
 PlayState._onHeroVsKey = function(hero, key){
-    this.sfx.key.play();
-    key.kill();
-    this.hasKey = true;
+    if(this.coinPickupCount == 9){
+        this.sfx.key.play();
+        key.kill();
+        this.hasKey = true;
+    }
+    else{
+        this.sfx.stomp.play();
+    }
 };
 
 PlayState._onHeroVsCoin = function(hero, coin){
@@ -301,7 +307,7 @@ PlayState._onHeroVsDoor = function(hero, door){
 
 PlayState._goToNextLevel = function(){
     this.camera.fade('#000000');
-    Spider.SPEED = Spider.SPEED + 25;
+    Spider.SPEED = Spider.SPEED + 30;
     this.camera.onFadeComplete.addOnce(function(){
         this.game.state.restart(true, false, {
             level: this.level + 1
@@ -390,15 +396,22 @@ PlayState._createHud = function(){
     const NUMBERS_STR = '0123456789X ';
     this.coinFont = this.game.add.retroFont('font:numbers', 20, 26,
         NUMBERS_STR, 6);
+    this.levelInfo = this.game.add.retroFont('font:numbers', 20, 26,
+        NUMBERS_STR, 6);
     this.keyIcon = this.game.make.image(0, 19, 'icon:key');
     this.keyIcon.anchor.set(0, 0.5);
     let coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, 'icon:coin');
+    let coinIcon2 = this.game.make.image(this.keyIcon.width + 100, 0, 'icon:coin');
     let coinScoreImg = this.game.make.image(coinIcon.x + coinIcon.width,
         coinIcon.height / 2, this.coinFont);
+    let levelInfoImg = this.game.make.image(coinIcon2.x + coinIcon2.width,
+        coinIcon2.height / 2, this.levelInfo);
     coinScoreImg.anchor.set(0, 0.5);
+    levelInfoImg.anchor.set(0, 0.5);
     this.hud = this.game.add.group();
     this.hud.add(coinIcon);
     this.hud.add(coinScoreImg);
+    this.hud.add(levelInfoImg);
     this.hud.add(this.keyIcon);
     this.hud.position.set(10, 10);
 };
