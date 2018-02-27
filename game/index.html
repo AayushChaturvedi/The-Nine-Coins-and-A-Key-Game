@@ -1,17 +1,48 @@
 <!doctype html>
 <head>
-    <title>Platformer Game</title>
+    <title>The Nine Coins and A Key</title>
     <meta charset="utf-8">
 
     <script src="js/phaser.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/finalmain.js"></script>
 
     <style>
+        body{
+            background-color: rgb(20, 20, 40);
+        }
+        .instructions {
+            margin: 0 auto;
+            width: 960px;
+        }
         canvas {
             margin: 0 auto;
+        }
+        h1{
+            text-decoration-style: wavy;
+            color: rgb(120, 70, 150);
+            text-align: center;
+        }
+        h3{
+            color: rgb(176, 209, 157);
+            text-align: center;
+        }
+        p{
+            line-height: 30px;
+            color: rgb(255,228,181);
+            font-size: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <div>
+        <h1>The Nine Coins and a Key</h1>
+        <h3>A CLASSICAL ARCADE GAME</h3>
+    </div>
     <div id="game"></div>
+    <div class="instructions">
+        <p>Help our hero Mr. Bubble Noobie <img src="images/hero_stopped.png"> to get all the nine coins <img src="images/coin_icon.png">and then the key <img src="images/key.png"> to open the door to next level.<br><br>
+        Move around the place by the Left and Right Arrow Keys, and Jump by the Up Arrow Key. Collect coins and keys along the way, and reach the door to the next level. Our Hero, otherwie very brave, is afraid of the Nasty Spiders that might pop up here and there, he however does have a way to counter them too. We'll leave it to you to find the way out.<br><br> 
+        Once you have completed the ninth Level, you may consider yourself a champion, or can keep playing, only to find that the nasty spiders are way too quicker now.</p>
+    </div>
 </body>
