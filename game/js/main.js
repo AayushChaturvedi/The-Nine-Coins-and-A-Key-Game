@@ -8,10 +8,10 @@ function Hero(game, x, y){
     this.body.collideWorldBounds = true;
     //add animations
     this.animations.add('stop', [0]);
-    this.animations.add('run', [1, 2], 8, true); //8fps looped
+    this.animations.add('run', [1, 2], 8, true);
     this.animations.add('jump', [3]);
     this.animations.add('fall', [4]);
-    this.animations.add('die', [5, 6, 5, 6, 5, 6, 5, 6], 12); //12fps no loop
+    this.animations.add('die', [5, 6, 5, 6, 5, 6, 5, 6], 12);
     //start animation
     this.animations.play('stop');
 }
@@ -109,7 +109,7 @@ function Spider(game, x, y){
     this.body.velocity.x = Spider.SPEED;
 }
 
-Spider.SPEED = 100;
+Spider.SPEED = 25; //see around line 298
 
 Spider.prototype = Object.create(Phaser.Sprite.prototype);
 Spider.prototype.constructor = Spider;
@@ -139,8 +139,15 @@ LoadingState.init = function(){
 
 LoadingState.preload = function(){
     //load json data files
-    this.game.load.json('level:0', 'data/level00.json');
-    this.game.load.json('level:1', 'data/level01.json');
+    this.game.load.json('level:0', 'data/stage0.json');
+    this.game.load.json('level:1', 'data/stage1.json');
+    this.game.load.json('level:2', 'data/stage2.json');
+    this.game.load.json('level:3', 'data/stage3.json');
+    this.game.load.json('level:4', 'data/stage4.json');
+    this.game.load.json('level:5', 'data/stage5.json');
+    this.game.load.json('level:6', 'data/stage6.json');
+    this.game.load.json('level:7', 'data/stage7.json');
+    this.game.load.json('level:8', 'data/stage8.json');
     //load images
     this.game.load.image('font:numbers', 'images/numbers.png');
     this.game.load.image('icon:coin', 'images/coin_icon.png');
@@ -176,7 +183,7 @@ LoadingState.create = function(){
 //PLAYSTATE
 PlayState = {};
 
-const LEVEL_COUNT = 2;
+const LEVEL_COUNT = 9;
 
 PlayState.init = function(data){
     this.keys = this.game.input.keyboard.addKeys({
@@ -184,8 +191,8 @@ PlayState.init = function(data){
         right: Phaser.KeyCode.RIGHT,
         up: Phaser.KeyCode.UP
     });
-    this.coinPickupCount = 0;
     this.hasKey = false;
+    this.coinPickupCount = 0;
     this.level = (data.level || 0) % LEVEL_COUNT;
 };
 
@@ -294,6 +301,7 @@ PlayState._onHeroVsDoor = function(hero, door){
 
 PlayState._goToNextLevel = function(){
     this.camera.fade('#000000');
+    Spider.SPEED = Spider.SPEED + 25;
     this.camera.onFadeComplete.addOnce(function(){
         this.game.state.restart(true, false, {
             level: this.level + 1
@@ -353,7 +361,7 @@ PlayState._spawnCoin = function(coin){
     sprite.anchor.set(0.5, 0.5);
     this.game.physics.enable(sprite);
     sprite.body.allowGravity = false;
-    sprite.animations.add('rotate', [0, 1, 2, 1], 6, true); //6fps, looped
+    sprite.animations.add('rotate', [0, 1, 2, 1], 6, true);
     sprite.animations.play('rotate');
 };
 
