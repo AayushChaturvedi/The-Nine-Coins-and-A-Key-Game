@@ -1,4 +1,4 @@
-# PlatformerGame
+# The Nine Coins and A Key Game
 
 To play the game:
 
