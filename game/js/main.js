@@ -22,11 +22,11 @@ Hero.prototype.constructor = Hero;
 //Hero move function
 Hero.prototype.move = function(direction){
     if(this.isFrozen){ 
-    	return; 
+        return; 
     }
-	const SPEED = 200;
+    const SPEED = 200;
     this.body.velocity.x = direction * SPEED;
-	//update image flipping & animations
+    //update image flipping & animations
     if(this.body.velocity.x < 0){
         this.scale.x = -1;
     }
@@ -151,6 +151,7 @@ LoadingState.preload = function(){
     //load images
     this.game.load.image('font:numbers', 'images/numbers.png');
     this.game.load.image('icon:coin', 'images/coin_icon.png');
+    this.game.load.image('icon:level', 'images/levelimg2.png')
     this.game.load.image('background', 'images/background.png');
     this.game.load.image('invisible-wall', 'images/invisible_wall.png');
     this.game.load.image('ground', 'images/ground.png');
@@ -285,21 +286,21 @@ PlayState._onHeroVsEnemy = function(hero, enemy){
         this.sfx.stomp.play();
     }
     else{ 
-    	hero.die();
+        hero.die();
         this.sfx.stomp.play();
         hero.events.onKilled.addOnce(function(){
             this.game.state.restart(true, false, {level: this.level});
         }, this);
         //I still don't know what the line below does exactly, 
         //on rough basis, it has something to do with a Phaser library bug maybe!
-		enemy.body.touching = enemy.body.wasTouching;
+        enemy.body.touching = enemy.body.wasTouching;
     }
 };
 
 PlayState._onHeroVsDoor = function(hero, door){
     door.frame = 1;
     this.sfx.door.play();
-	hero.freeze();
+    hero.freeze();
     this.game.add.tween(hero)
         .to({x: this.door.x, alpha: 0}, 500, null, true)
         .onComplete.addOnce(this._goToNextLevel, this);
@@ -322,16 +323,16 @@ PlayState._loadLevel = function(data){
     this.spiders = this.game.add.group();
     this.enemyWalls = this.game.add.group();
     this.enemyWalls.visible = false;
-	this._spawnCharacters({hero: data.hero, spiders: data.spiders});
-	data.decoration.forEach(function(deco){
+    this._spawnCharacters({hero: data.hero, spiders: data.spiders});
+    data.decoration.forEach(function(deco){
         this.bgDecoration.add(
             this.game.add.image(deco.x, deco.y, 'decoration', deco.frame));
     }, this);
-	data.platforms.forEach(this._spawnPlatform, this);
-	data.coins.forEach(this._spawnCoin, this);
+    data.platforms.forEach(this._spawnPlatform, this);
+    data.coins.forEach(this._spawnCoin, this);
     this._spawnKey(data.key.x, data.key.y);
     this._spawnDoor(data.door.x, data.door.y);
-	const GRAVITY = 1200;
+    const GRAVITY = 1200;
     this.game.physics.arcade.gravity.y = GRAVITY;
 };
 
@@ -340,14 +341,14 @@ PlayState._spawnCharacters = function(data){
         let sprite = new Spider(this.game, spider.x, spider.y);
         this.spiders.add(sprite);
     }, this);
-	this.hero = new Hero(this.game, data.hero.x, data.hero.y);
+    this.hero = new Hero(this.game, data.hero.x, data.hero.y);
     this.game.add.existing(this.hero);
 };
 
 PlayState._spawnPlatform = function(platform){
     let sprite = this.platforms.create(
         platform.x, platform.y, platform.image);
-	this.game.physics.enable(sprite);
+    this.game.physics.enable(sprite);
     sprite.body.allowGravity = false;
     sprite.body.immovable = true;
     this._spawnEnemyWall(platform.x, platform.y, 'left');
@@ -392,7 +393,7 @@ PlayState._spawnDoor = function(x, y){
 };
 
 PlayState._createHud = function(){
-	//_createHud intializes and maintains all the Scoreboard functionality
+    //_createHud intializes and maintains all the Scoreboard functionality
     const NUMBERS_STR = '0123456789X ';
     this.coinFont = this.game.add.retroFont('font:numbers', 20, 26,
         NUMBERS_STR, 6);
@@ -401,7 +402,8 @@ PlayState._createHud = function(){
     this.keyIcon = this.game.make.image(0, 19, 'icon:key');
     this.keyIcon.anchor.set(0, 0.5);
     let coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, 'icon:coin');
-    let coinIcon2 = this.game.make.image(this.keyIcon.width + 100, 0, 'icon:coin');
+    let levelSignImage = this.game.make.image(this.keyIcon.width + 100, 0, 'icon:level');
+    let coinIcon2 = this.game.make.image(this.keyIcon.width + 160, 0, 'icon:coin');
     let coinScoreImg = this.game.make.image(coinIcon.x + coinIcon.width,
         coinIcon.height / 2, this.coinFont);
     let levelInfoImg = this.game.make.image(coinIcon2.x + coinIcon2.width,
@@ -412,6 +414,7 @@ PlayState._createHud = function(){
     this.hud.add(coinIcon);
     this.hud.add(coinScoreImg);
     this.hud.add(levelInfoImg);
+    this.hud.add(levelSignImage);
     this.hud.add(this.keyIcon);
     this.hud.position.set(10, 10);
 };
