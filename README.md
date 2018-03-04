@@ -17,6 +17,10 @@ To play the game:
         cd Documents/game
         python -m SimpleHTTPServer
     ```
+    Note : For some users, this may not work. For those who have python, and running the above command shows the error "No such     module found" use the following:
+    ```
+       python2.7 -m SimpleHTTPServer
+    ```
 3. The above step will display a PORTNUMBER where the system has set up a local server.
    In the browser, go to the URL : localhost:PORTNUMBER.
    For example, if your port has been setup at port 8000, go to 
