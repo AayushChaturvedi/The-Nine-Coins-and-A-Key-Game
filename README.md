@@ -26,6 +26,9 @@ To play the game:
    For example, if your port has been setup at port 8000, go to 
    localhost:8000
    in your browser.
+
+NOTE : 
+  It has also came in observation that simply opening the index.html file does it in certain configurations. You may first like   to try that before following above procedure.
    
    
 ------------------------------------------------------------------ ENJOY THE GAME !!! ------------------------------------------------------------------
